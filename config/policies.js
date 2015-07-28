@@ -13,5 +13,10 @@ module.exports.policies = {
 
   AuthController: {
     '*': ['passport']
-  }
+  },
+
+  UserController: {
+    revoke: true
+  },
+
 };
