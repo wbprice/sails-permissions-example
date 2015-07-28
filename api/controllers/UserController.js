@@ -18,45 +18,38 @@ _.merge(exports, {
 
     console.log(userId, roleId);
 
-    // User.findOne({id: userID}).then(function(err, response) {
-    //   console.log('user:');
-    //   console.log(response);
-    //   return userNameToRevoke = response.username;
-    // }).then(function(obj) {
-    //   return Role.findOne({id: roleID}).exec(function(err, response) {
-    //     console.log('response:');
-    //     console.log(response);
-    //     return roleToRevoke = response.name;
-    //   });
-    // }).then(function(obj) {
+    PermissionService.removeUsersFromRole(userId, roleId).then(function() {
+      res.send({
+        message: 'cancel ' + userId + '\'s access to ' + roleId,
+        status: 200,
+        role: roleId,
+        user: userId
+      });
+    });
+
+    // User.findOne()
+    //     .where({id: userId})
+    //     .then(function(user) {
+    //       userNameToRevoke = user.username;
+    //       return user;
+    //     })
+    //     .then(function() {
     //
-    //   res.send('should cancel ' + userNameToRevoke + '\'s access to ' + roleToRevoke);
+    //       return Role.findOne()
+    //           .where({id: roleId})
+    //           .then(function(role) {
+    //             roleToRevoke = role.name
+    //             return role;
+    //           });
     //
-    // });
-
-    User.findOne()
-        .where({id: userId})
-        .then(function(user) {
-          userNameToRevoke = user.username;
-          return user;
-        })
-        .then(function() {
-
-          return Role.findOne()
-              .where({id: roleId})
-              .then(function(role) {
-                roleToRevoke = role.name
-                return role;
-              });
-
-        })
-        .then(function(user) {
-
-          PermissionService.removeUsersFromRole(userNameToRevoke, roleToRevoke).then(function() {
-            res.send('should cancel ' + userNameToRevoke + '\'s access to ' + roleToRevoke);
-          });
-
-        });
+    //     })
+    //     .then(function(user) {
+    //
+    //       PermissionService.removeUsersFromRole(userNameToRevoke, roleToRevoke).then(function() {
+    //         res.send('should cancel ' + userNameToRevoke + '\'s access to ' + roleToRevoke);
+    //       });
+    //
+    //     });
 
   }
 
