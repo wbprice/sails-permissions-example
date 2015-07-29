@@ -71,7 +71,7 @@ module.exports.routes = {
   },
 
   'GET /role/search/:query': {
-    controller: 'UserController',
+    controller: 'RoleController',
     action: 'search'
   },
 

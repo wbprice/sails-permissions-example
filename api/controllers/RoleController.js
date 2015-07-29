@@ -69,6 +69,16 @@ _.merge(exports, {
 
   },
 
+  /**
+   * @name RoleController#grant
+   * @description
+   * A function that handles a request to grant a specific permission a given
+   * Role has for a given Model. Requires :action, which is a string
+   * that matches a specific action.
+   * @example
+   * GET /role/:roleid/revoke/:modelid/:action
+   */
+
   grant: function(req, res) {
 
     var modelId, roleId, actionName;
@@ -112,5 +122,38 @@ _.merge(exports, {
     });
 
   },
+
+  /**
+   * @name RoleController#search
+   * @description
+   * A function that checks a list of roles that exist in the database.
+   * @example
+   * GET /role/:roleid/revoke/:modelid/:action
+   */
+
+   search: function(req, res) {
+
+     var query = req.param('query');
+
+     Role.find()
+     .where({name: {startsWith: query}})
+     .then(function(response) {
+
+       if (response.length > 0) {
+         res.send({
+           status: 200,
+           matches: response
+         });
+       } else {
+         res.send({
+           status: 404,
+           matches: [],
+           message: 'No matches were found.'
+         });
+       }
+
+     });
+
+   }
 
 });
