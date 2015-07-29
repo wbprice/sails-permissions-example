@@ -28,7 +28,7 @@ _.merge(exports, {
     .then(function(user) {
 
       this.user = user;
-      return Role.findOne({id: roleId})
+      return Role.findOne({id: roleId});
 
     })
     .then(function(role) {
@@ -56,6 +56,24 @@ _.merge(exports, {
       });
 
     });
+
+  },
+
+  /**
+   * @name UserController#search
+   * @description
+   * A function that checks the list of users to see if any users have names that
+   * match the submitted query.
+   * @example
+   * GET /user/search/:query
+   */
+
+  search: function(req, res) {
+
+    var query = req.param('query');
+
+
+
 
   }
 

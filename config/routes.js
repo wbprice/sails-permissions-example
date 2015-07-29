@@ -46,10 +46,19 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
+  // UserController
+
   'GET /user/:userid/revoke/:roleid': {
     controller: 'UserController',
     action: 'revoke'
   },
+
+  'GET /user/search/:query': {
+    controller: 'UserController',
+    action: 'search'
+  },
+
+  // Role Controller
 
   'GET /role/:roleid/revoke/:modelid/:action?': {
     controller: 'RoleController',
@@ -59,6 +68,11 @@ module.exports.routes = {
   'GET /role/:roleid/grant/:modelid/:action': {
     controller: 'RoleController',
     action: 'grant'
-  }
+  },
+
+  'GET /role/search/:query': {
+    controller: 'UserController',
+    action: 'search'
+  },
 
 };
