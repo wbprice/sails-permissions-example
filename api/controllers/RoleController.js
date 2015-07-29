@@ -9,13 +9,15 @@ _.merge(exports, {
   // Extend with custom logic here by adding additional fields, methods, etc.
 
   /**
+   * @name RoleController#revoke
+   * @description
    * A function that handles a request to revoke all the permissions a given
    * Role has for a given Model.
    * @example
    * GET /role/:roleid/revoke/:modelid
    */
 
-  revokeAll: function(req, res) {
+  revoke: function(req, res) {
 
     var modelId, roleId;
 

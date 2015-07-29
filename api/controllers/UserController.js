@@ -8,44 +8,54 @@ _.merge(exports, {
 
   // Extend with custom logic here by adding additional fields, methods, etc.
 
+
+  /**
+   * @name UserController#revoke
+   * @description
+   * A function that handles a request to remove a role from a given user.
+   * @example
+   * GET /user/:userid/revoke/:roleid
+   */
+
   revoke: function(req, res) {
 
-    var userId, roleId,
-        userNameToRevoke, roleToRevoke;
+    var userId, roleId;
 
     userId = req.param('userid');
     roleId = req.param('roleid');
 
-    User.findOne()
-        .where({id: userId})
-        .then(function(user) {
-          userNameToRevoke = user.username;
-          return user;
-        })
-        .then(function() {
+    User.findOne({id: userId})
+    .then(function(user) {
 
-          return Role.findOne()
-              .where({id: roleId})
-              .then(function(role) {
-                roleToRevoke = role.name
-                return role;
-              });
+      this.user = user;
+      return Role.findOne({id: roleId})
 
-        })
-        .then(function(user) {
+    })
+    .then(function(role) {
 
-          PermissionService.removeUsersFromRole(userNameToRevoke, roleToRevoke).then(function() {
-            res.send({
-              message: 'should cancel ' + userNameToRevoke + '\'s access to ' + roleToRevoke,
-              status: 200,
-              role: {
-                id: roleId,
-                name: roleToRevoke
-              }
-            });
-          });
+      this.role = role;
+      return PermissionService.removeUsersFromRole(
+        this.user.username,
+        this.role.name
+      );
 
-        });
+    })
+    .then(function() {
+
+      res.send({
+        message: 'Cancelled ' + this.user.name + '\'s access to the role ' + this.role.name,
+        status: 200,
+        role: {
+          id: this.role.id,
+          name: this.role.name
+        },
+        user: {
+          id: this.user.id,
+          name: this.user.username
+        }
+      });
+
+    });
 
   }
 
