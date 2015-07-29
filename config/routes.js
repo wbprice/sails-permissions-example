@@ -49,6 +49,11 @@ module.exports.routes = {
   'GET /user/:userid/revoke/:roleid': {
     controller: 'UserController',
     action: 'revoke'
+  },
+
+  'GET /role/:roleid/revoke/:modelid': {
+    controller: 'RoleController',
+    action: 'revokeAll'
   }
 
 };

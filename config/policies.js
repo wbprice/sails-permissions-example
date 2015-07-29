@@ -19,4 +19,8 @@ module.exports.policies = {
     revoke: true
   },
 
+  RoleController: {
+    revokeAll: true
+  }
+
 };
