@@ -51,9 +51,14 @@ module.exports.routes = {
     action: 'revoke'
   },
 
-  'GET /role/:roleid/revoke/:modelid': {
+  'GET /role/:roleid/revoke/:modelid/:action?': {
     controller: 'RoleController',
-    action: 'revokeAll'
+    action: 'revoke'
+  },
+
+  'GET /role/:roleid/grant/:modelid/:action?': {
+    controller: 'RoleController',
+    action: 'grant'
   }
 
 };

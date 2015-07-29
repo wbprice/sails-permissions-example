@@ -20,7 +20,8 @@ module.exports.policies = {
   },
 
   RoleController: {
-    revokeAll: true
+    revoke: true,
+    grant: true
   }
 
 };

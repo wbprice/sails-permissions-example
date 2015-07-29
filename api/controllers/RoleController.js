@@ -12,17 +12,19 @@ _.merge(exports, {
    * @name RoleController#revoke
    * @description
    * A function that handles a request to revoke all the permissions a given
-   * Role has for a given Model.
+   * Role has for a given Model.  Takes an option :action, which is a string
+   * that matches a specific action.
    * @example
-   * GET /role/:roleid/revoke/:modelid
+   * GET /role/:roleid/revoke/:modelid/:action?
    */
 
   revoke: function(req, res) {
 
-    var modelId, roleId;
+    var modelId, roleId, actionId;
 
     roleId = req.param('roleid');
     modelId = req.param('modelid');
+    actionId = req.param('action');
 
     Role.findOne({id: roleId})
     .then(function(role) {
@@ -36,7 +38,8 @@ _.merge(exports, {
       this.model = model;
       return Permission.destroy({
           model: model.id,
-          role: role.id
+          role: role.id,
+          action: actionId
       });
 
     })
@@ -57,6 +60,50 @@ _.merge(exports, {
 
     });
 
-  }
+  },
+
+  grant: function(req, res) {
+
+    var modelId, roleId, actionId;
+
+    roleId = req.param('roleid');
+    modelId = req.param('modelid');
+    actionId = req.param('action');
+
+    Role.findOne({id: roleId})
+    .then(function(role) {
+
+      this.role = role;
+      return Model.findOne({id: modelId});
+
+    })
+    .then(function(model) {
+
+      this.model = model;
+      return Permission.create({
+          model: model.id,
+          role: role.id,
+          action: actionId
+      });
+
+    })
+    .then(function() {
+
+      res.send({
+        message: 'Removed permissions for ' + this.model.name + ' from ' + this.role.name,
+        status: 200,
+        model: {
+          id: this.model.id,
+          name: this.model.name
+        },
+        role: {
+          id: this.role.id,
+          name: this.role.name
+        }
+      });
+
+    });
+
+  },
 
 });
