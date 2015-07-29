@@ -72,8 +72,8 @@ _.merge(exports, {
 
     var query = req.param('query');
 
-    User.find()
-    .where({username : {startsWith: query}})
+    Role.find()
+    .where({name : {startsWith: query}})
     .then(function(response) {
 
       if (response.length > 0) {

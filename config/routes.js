@@ -53,6 +53,11 @@ module.exports.routes = {
     action: 'revoke'
   },
 
+  'GET /user/:userid/grant/:roleid': {
+    controller: 'UserController',
+    action: 'grant'
+  },
+
   'GET /user/search/:query': {
     controller: 'UserController',
     action: 'search'
