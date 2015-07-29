@@ -20,11 +20,11 @@ _.merge(exports, {
 
   revoke: function(req, res) {
 
-    var modelId, roleId, actionId;
+    var modelId, roleId, actionName, conf;
 
     roleId = req.param('roleid');
     modelId = req.param('modelid');
-    actionId = req.param('action');
+    actionName = req.param('action');
 
     Role.findOne({id: roleId})
     .then(function(role) {
@@ -36,17 +36,24 @@ _.merge(exports, {
     .then(function(model) {
 
       this.model = model;
-      return Permission.destroy({
-          model: model.id,
-          role: role.id,
-          action: actionId
-      });
+
+      destroyConfiguration = {
+        model: model.id,
+        role: role.id,
+      };
+
+      if (actionName) {
+        destroyConfiguration.action = actionName;
+      }
+
+      return Permission.destroy(destroyConfiguration);
 
     })
     .then(function() {
 
       res.send({
-        message: 'Removed permissions for ' + this.model.name + ' from ' + this.role.name,
+        message: actionName ? 'Removed ' + actionName + ' permissions from the model ' + this.model.name + ' from ' + this.role.name :
+                              'Removed permissions from the model ' + this.model.name + ' from ' + this.role.name,
         status: 200,
         model: {
           id: this.model.id,
@@ -90,7 +97,7 @@ _.merge(exports, {
     .then(function() {
 
       res.send({
-        message: 'Added ' + actionName + ' permissions to ' + this.model.name + ' for ' + this.role.name,
+        message: 'Added ' + actionName + ' permissions to the model ' + this.model.name + ' for ' + this.role.name,
         status: 200,
         model: {
           id: this.model.id,
