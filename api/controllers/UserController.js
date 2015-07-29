@@ -16,40 +16,36 @@ _.merge(exports, {
     userId = req.param('userid');
     roleId = req.param('roleid');
 
-    console.log(userId, roleId);
+    User.findOne()
+        .where({id: userId})
+        .then(function(user) {
+          userNameToRevoke = user.username;
+          return user;
+        })
+        .then(function() {
 
-    PermissionService.removeUsersFromRole(userId, roleId).then(function() {
-      res.send({
-        message: 'cancel ' + userId + '\'s access to ' + roleId,
-        status: 200,
-        role: roleId,
-        user: userId
-      });
-    });
+          return Role.findOne()
+              .where({id: roleId})
+              .then(function(role) {
+                roleToRevoke = role.name
+                return role;
+              });
 
-    // User.findOne()
-    //     .where({id: userId})
-    //     .then(function(user) {
-    //       userNameToRevoke = user.username;
-    //       return user;
-    //     })
-    //     .then(function() {
-    //
-    //       return Role.findOne()
-    //           .where({id: roleId})
-    //           .then(function(role) {
-    //             roleToRevoke = role.name
-    //             return role;
-    //           });
-    //
-    //     })
-    //     .then(function(user) {
-    //
-    //       PermissionService.removeUsersFromRole(userNameToRevoke, roleToRevoke).then(function() {
-    //         res.send('should cancel ' + userNameToRevoke + '\'s access to ' + roleToRevoke);
-    //       });
-    //
-    //     });
+        })
+        .then(function(user) {
+
+          PermissionService.removeUsersFromRole(userNameToRevoke, roleToRevoke).then(function() {
+            res.send({
+              message: 'should cancel ' + userNameToRevoke + '\'s access to ' + roleToRevoke,
+              status: 200,
+              role: {
+                id: roleId,
+                name: roleToRevoke
+              }
+            });
+          });
+
+        });
 
   }
 
