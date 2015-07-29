@@ -42,7 +42,15 @@ _.merge(exports, {
 
       res.send({
         message: 'Removed permissions for ' + this.model.name + ' from ' + this.role.name,
-        status: 200
+        status: 200,
+        model: {
+          id: this.model.id,
+          name: this.model.name
+        },
+        role: {
+          id: this.role.id,
+          name: this.role.name
+        }
       });
 
     });
