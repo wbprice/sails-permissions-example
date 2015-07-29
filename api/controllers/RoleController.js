@@ -36,7 +36,6 @@ _.merge(exports, {
     .then(function(model) {
 
       this.model = model;
-
       destroyConfiguration = {
         model: model.id,
         role: role.id,
@@ -135,9 +134,12 @@ _.merge(exports, {
 
      var query = req.param('query');
 
-     Role.find()
+     Model.find()
      .where({name: {startsWith: query}})
      .then(function(response) {
+
+       console.log(response);
+       console.log(query);
 
        if (response.length > 0) {
          res.send({

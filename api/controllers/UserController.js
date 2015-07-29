@@ -59,6 +59,40 @@ _.merge(exports, {
 
   },
 
+  grant: function(req, res) {
+
+    var userId, roleId;
+
+    userId = req.param('userid');
+    roleId = req.param('roleid');
+
+    User.findOne({id: userId})
+    .then(function(user) {
+
+      this.user = user;
+      return Role.findOne({id: roleId});
+
+    })
+    .then(function(role) {
+
+      this.role = role;
+
+      return PermissionService.addUsersToRole(
+        this.user.username,
+        this.role.name
+      );
+
+    }).then(function() {
+
+      res.send({
+        status: 200,
+        message: 'the role ' + this.role.name + ' was added to the user ' + this.user.username
+      });
+
+    });
+
+  },
+
   /**
    * @name UserController#search
    * @description
