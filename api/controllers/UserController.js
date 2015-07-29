@@ -72,8 +72,24 @@ _.merge(exports, {
 
     var query = req.param('query');
 
+    User.find()
+    .where({username : {startsWith: query}})
+    .then(function(response) {
 
+      if (response.length > 0) {
+        res.send({
+          status: 200,
+          matches: response
+        });
+      } else {
+        res.send({
+          status: 404,
+          matches: [],
+          message: 'No matches were found.'
+        });
+      }
 
+    });
 
   }
 
