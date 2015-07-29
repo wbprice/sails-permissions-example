@@ -64,11 +64,11 @@ _.merge(exports, {
 
   grant: function(req, res) {
 
-    var modelId, roleId, actionId;
+    var modelId, roleId, actionName;
 
     roleId = req.param('roleid');
     modelId = req.param('modelid');
-    actionId = req.param('action');
+    actionName = req.param('action');
 
     Role.findOne({id: roleId})
     .then(function(role) {
@@ -83,14 +83,14 @@ _.merge(exports, {
       return Permission.create({
           model: model.id,
           role: role.id,
-          action: actionId
+          action: actionName
       });
 
     })
     .then(function() {
 
       res.send({
-        message: 'Removed permissions for ' + this.model.name + ' from ' + this.role.name,
+        message: 'Added ' + actionName + ' permissions to ' + this.model.name + ' for ' + this.role.name,
         status: 200,
         model: {
           id: this.model.id,
