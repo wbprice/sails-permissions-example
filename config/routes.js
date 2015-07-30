@@ -80,4 +80,9 @@ module.exports.routes = {
     action: 'search'
   },
 
+  'POST /role/create': {
+    controller: 'RoleController',
+    action: 'create'
+  }
+
 };

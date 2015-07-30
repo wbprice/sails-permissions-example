@@ -138,9 +138,6 @@ _.merge(exports, {
      .where({name: {startsWith: query}})
      .then(function(response) {
 
-       console.log(response);
-       console.log(query);
-
        if (response.length > 0) {
          res.send({
            status: 200,
@@ -156,6 +153,73 @@ _.merge(exports, {
 
      });
 
-   }
+   },
+
+   /**
+    * @name RoleController#create
+    * @description
+    * A function that creates a new role, using names and permissions as passed
+    * in the request object.
+    * @example
+    * POST /role/create
+    */
+
+    create: function(req, res) {
+
+
+      console.log('req.query.name: ' + req.query.name);
+      console.log(JSON.parse(req.query.props));
+
+      var role = req.query;
+          role.props = JSON.parse(req.query.props);
+
+      Role.create({
+        name: role.name
+      })
+      .then(function(role) {
+
+        this.role = role;
+
+        return req.query.props
+
+      }).map(function(model) {
+
+        console.log('model: ' + JSON.stringify(model));
+        console.log(this.role.id);
+
+        return Promise.all([
+          Permission.create({
+            model: model.id,
+            action: 'create',
+            role: this.role.id
+          }),
+          Permission.create({
+            model: model.id,
+            action: 'read',
+            role: this.role.id
+          }),
+          Permission.create({
+            model: model.id,
+            action: 'update',
+            role: this.role.id
+          }),
+          Permission.create({
+            model: model.id,
+            action: 'delete',
+            role: this.role.id
+          })
+        ]);
+
+      }).then(function() {
+
+        res.send({
+          status: 200,
+          message: 'ok!',
+          role: this.role
+        });
+
+      });
+
+    }
 
 });

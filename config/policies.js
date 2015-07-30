@@ -18,7 +18,8 @@ module.exports.policies = {
   UserController: {
     revoke: true,
     grant: true,
-    search: true
+    search: true,
+    create: true
   },
 
   RoleController: {
