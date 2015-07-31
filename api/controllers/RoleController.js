@@ -179,6 +179,8 @@ _.merge(exports, {
 
       }).map(function(model) {
 
+        this.model = model;
+
         _.forEach(model.permissions, function(el, key) {
 
           if (el) {
@@ -201,8 +203,7 @@ _.merge(exports, {
 
         res.send({
           status: 200,
-          message: 'ok!',
-          role: this.role
+          message: 'A role ' + this.role.name + ' was created and has actions: ' + this.model.permissions + ' on ' + this.model.name + '.',
         });
 
       });
