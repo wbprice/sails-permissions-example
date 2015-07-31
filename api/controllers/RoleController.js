@@ -11,11 +11,16 @@ _.merge(exports, {
   /**
    * @name RoleController#revoke
    * @description
-   * A function that handles a request to revoke all the permissions a given
-   * Role has for a given Model.  Takes an option :action, which is a string
-   * that matches a specific action.
+   * A function that handles a request to remove one or more actions that a given
+   * role can take on an entry with a given model.
    * @example
    * GET /role/:roleid/revoke/:modelid/:action?
+   * @param {number} :roleid
+   * id for the role to be edited
+   * @param {number} :modelid
+   * id for the model to modify actions on for this role
+   * @param {string=} action
+   * Optional param. If specified, will remove one particular action.
    */
 
   revoke: function(req, res) {
@@ -40,6 +45,11 @@ _.merge(exports, {
         model: model.id,
         role: role.id,
       };
+
+      /**
+       * If the action key isn't in the object passed to #destroy, all CRUD
+       * actions will be removed.
+       */
 
       if (actionName) {
         destroyConfiguration.action = actionName;
@@ -71,11 +81,13 @@ _.merge(exports, {
   /**
    * @name RoleController#grant
    * @description
-   * A function that handles a request to grant a specific permission a given
-   * Role has for a given Model. Requires :action, which is a string
-   * that matches a specific action.
+   * A function that handles a request to grant a given role the ability to
+   * perform a specific action on an entry belonging to a given model.
    * @example
    * GET /role/:roleid/revoke/:modelid/:action
+   * @param {number} :roleid
+   * @param {number} :modelid
+   * @param {string} :action
    */
 
   grant: function(req, res) {
@@ -125,9 +137,14 @@ _.merge(exports, {
   /**
    * @name RoleController#search
    * @description
-   * A function that checks a list of roles that exist in the database.
+   * Fuzzy search on a budget.  Matches the beginning of a string
+   * and returns an array of similar matches from available Roles.
    * @example
-   * GET /role/:roleid/revoke/:modelid/:action
+   * GET /role/search/:query
+   * @param {string} :query
+   * The query to find similar results for.
+   * @returns {object}
+   * An object containing a status and an array containing matches.
    */
 
    search: function(req, res) {
@@ -158,10 +175,13 @@ _.merge(exports, {
    /**
     * @name RoleController#create
     * @description
-    * A function that creates a new role, using names and permissions as passed
-    * in the request object.
+    * A method that creates a new role and allows it to perform specified actions
+    * on a given number of models.
     * @example
     * POST /role/create
+    * @returns {object}
+    * An object containing a status code, a message advising the developer what
+    * role was created and what permissions were added, and the role object.
     */
 
     create: function(req, res) {
@@ -181,9 +201,9 @@ _.merge(exports, {
 
         this.model = model;
 
-        _.forEach(model.permissions, function(el, key) {
+        _.forEach(model.permissions, function(value, key) {
 
-          if (el) {
+          if (value) {
 
             actions.push(
               Permission.create({
