@@ -203,7 +203,8 @@ _.merge(exports, {
 
         res.send({
           status: 200,
-          message: 'A role ' + this.role.name + ' was created and has actions: ' + this.model.permissions + ' on ' + this.model.name + '.',
+          message: 'A role ' + this.role.name + ' was created and has actions: ' + JSON.stringify(this.model.permissions) + ' on ' + this.model.name + '.',
+          role: this.role
         });
 
       });
