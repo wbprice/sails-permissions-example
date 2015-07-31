@@ -8,13 +8,16 @@ _.merge(exports, {
 
   // Extend with custom logic here by adding additional fields, methods, etc.
 
-
   /**
    * @name UserController#revoke
    * @description
-   * A function that handles a request to remove a role from a given user.
+   * A method that handles a request to remove a specific role from a given user.
    * @example
    * GET /user/:userid/revoke/:roleid
+   * @param {number} :userid
+   * id for the model to modify actions on for this role
+   * @param {number} :roleid
+   * id for the role to be edited
    */
 
   revoke: function(req, res) {
@@ -59,6 +62,19 @@ _.merge(exports, {
 
   },
 
+  /**
+   * @name UserController#grant
+   * @description
+   * A method that handles a request to add a given role to a specific user.
+   * @example
+   * GET /user/:userid/grant/:roleid
+   * @param {number} :userid
+   * @param {number} :roleid
+   * @returns {object}
+   * An object containing a status code and a message advising what role was
+   * added to the user.
+   */
+
   grant: function(req, res) {
 
     var userId, roleId;
@@ -96,10 +112,12 @@ _.merge(exports, {
   /**
    * @name UserController#search
    * @description
-   * A function that checks the list of users to see if any users have names that
-   * match the submitted query.
+   * Fuzzy search on a budget for Users. Matches using startsWith.
    * @example
    * GET /user/search/:query
+   * @param {string} :query
+   * @returns {object}
+   * An object containing a status code and a list of matches.
    */
 
   search: function(req, res) {

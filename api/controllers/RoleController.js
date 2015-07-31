@@ -11,7 +11,7 @@ _.merge(exports, {
   /**
    * @name RoleController#revoke
    * @description
-   * A function that handles a request to remove one or more actions that a given
+   * A method that handles a request to remove one or more actions that a given
    * role can take on an entry with a given model.
    * @example
    * GET /role/:roleid/revoke/:modelid/:action?
@@ -81,7 +81,7 @@ _.merge(exports, {
   /**
    * @name RoleController#grant
    * @description
-   * A function that handles a request to grant a given role the ability to
+   * A method that handles a request to grant a given role the ability to
    * perform a specific action on an entry belonging to a given model.
    * @example
    * GET /role/:roleid/revoke/:modelid/:action
