@@ -166,49 +166,36 @@ _.merge(exports, {
 
     create: function(req, res) {
 
-
-      console.log('req.query.name: ' + req.query.name);
-      console.log(JSON.parse(req.query.props));
-
-      var role = req.query;
-          role.props = JSON.parse(req.query.props);
+      var actions = [];
 
       Role.create({
-        name: role.name
+        name: req.query.name
       })
       .then(function(role) {
 
         this.role = role;
 
-        return req.query.props
+        return JSON.parse(req.query.props);
 
       }).map(function(model) {
 
-        console.log('model: ' + JSON.stringify(model));
-        console.log(this.role.id);
+        _.forEach(model.permissions, function(el, key) {
 
-        return Promise.all([
-          Permission.create({
-            model: model.id,
-            action: 'create',
-            role: this.role.id
-          }),
-          Permission.create({
-            model: model.id,
-            action: 'read',
-            role: this.role.id
-          }),
-          Permission.create({
-            model: model.id,
-            action: 'update',
-            role: this.role.id
-          }),
-          Permission.create({
-            model: model.id,
-            action: 'delete',
-            role: this.role.id
-          })
-        ]);
+          if (el) {
+
+            actions.push(
+              Permission.create({
+                model: model.id,
+                action: key,
+                role: this.role.id
+              })
+            );
+
+          }
+
+        });
+
+        return Promise.all(actions);
 
       }).then(function() {
 
