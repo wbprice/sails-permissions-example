@@ -46,7 +46,8 @@ _.merge(exports, {
     .then(function() {
 
       res.send({
-        message: 'Cancelled ' + this.user.name + '\'s access to the role ' + this.role.name,
+        message: 'Cancelled ' + this.user.name + '\'s access to the role ' +
+                  this.role.name,
         status: 200,
         role: {
           id: this.role.id,
@@ -102,7 +103,8 @@ _.merge(exports, {
 
       res.send({
         status: 200,
-        message: 'the role ' + this.role.name + ' was added to the user ' + this.user.username
+        message: 'the role ' + this.role.name + ' was added to the user ' +
+                 this.user.username
       });
 
     });

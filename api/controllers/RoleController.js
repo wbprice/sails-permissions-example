@@ -61,8 +61,11 @@ _.merge(exports, {
     .then(function() {
 
       res.send({
-        message: actionName ? 'Removed ' + actionName + ' permissions from the model ' + this.model.name + ' from ' + this.role.name :
-                              'Removed permissions from the model ' + this.model.name + ' from ' + this.role.name,
+        message: actionName ? 'Removed ' + actionName + ' permissions from the'+
+															' model ' + this.model.name + ' from ' +
+															this.role.name :
+                              'Removed permissions from the model ' +
+															this.model.name + ' from ' + this.role.name,
         status: 200,
         model: {
           id: this.model.id,
@@ -118,7 +121,8 @@ _.merge(exports, {
     .then(function() {
 
       res.send({
-        message: 'Added ' + actionName + ' permissions to the model ' + this.model.name + ' for ' + this.role.name,
+        message: 'Added ' + actionName + ' permissions to the model ' +
+									this.model.name + ' for ' + this.role.name,
         status: 200,
         model: {
           id: this.model.id,
@@ -173,7 +177,7 @@ _.merge(exports, {
    },
 
    /**
-    * @name RoleController#create
+    * @name RoleController#make
     * @description
     * A method that creates a new role and allows it to perform specified actions
     * on a given number of models.
@@ -184,7 +188,7 @@ _.merge(exports, {
     * role was created and what permissions were added, and the role object.
     */
 
-    create: function(req, res) {
+    make: function(req, res) {
 
       var actions = [];
 
@@ -223,7 +227,9 @@ _.merge(exports, {
 
         res.send({
           status: 200,
-          message: 'A role ' + this.role.name + ' was created and has actions: ' + JSON.stringify(this.model.permissions) + ' on ' + this.model.name + '.',
+          message: 'A role ' + this.role.name + ' was created and has actions: ' +
+					 				 JSON.stringify(this.model.permissions) + ' on ' +
+									 this.model.name + '.',
           role: this.role
         });
 

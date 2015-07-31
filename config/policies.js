@@ -19,14 +19,13 @@ module.exports.policies = {
     revoke: true,
     grant: true,
     search: true,
-    create: true
   },
 
   RoleController: {
     revoke: true,
     grant: true,
     search: true,
-    create: true
+    make: true
   }
 
 };
